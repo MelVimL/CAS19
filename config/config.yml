@@ -1,0 +1,70 @@
+logger:
+  level: "INFO"
+  consol_active: yes
+  file_active: yes
+  file_path: "./log/test.log"
+
+simulation:
+  loops_per_run: 1000
+  snapshot_interval: 1000
+  stats_interval: 20
+  draw_interval: 100
+
+
+simulations:
+  - name: "Sim_1"
+    nodes:  10
+    graph:
+      generator_function:
+        name: "complete"
+    actor:
+      generator_function:
+        name: "random"
+        options:
+          n:  10
+      distribution_function:
+        name: "random"
+    stats:
+      active:
+        - "number_of_edges"
+        - "number_of_nodes"
+
+
+  - name: "Sim_2"
+    nodes: 2
+    graph:
+      generator_function:
+        name: "complete"
+    actor:
+      generator_function:
+        name: "random"
+        options:
+          n: 10
+      distribution_function:
+        name: "random"
+
+    stats:
+      active:
+        - "number_of_edges"
+        - "number_of_nodes"
+
+
+  - name: "Sim_3"
+    nodes: 1000
+    graph:
+      generator_function:
+        name: "barabasi_albert"
+        options:
+          m: 1
+          seed: None
+    actor:
+      generator_function:
+        name: "random"
+        options:
+          n: 10
+      distribution_function:
+        name: "random"
+    stats:
+      active:
+        - "number_of_edges"
+        - "number_of_nodes"
