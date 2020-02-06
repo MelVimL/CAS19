@@ -1,5 +1,5 @@
 logger:
-  level: "INFO"
+  level: "ERROR"
   consol_active: yes
   file_active: yes
   file_path: "./log/test.log"
@@ -7,7 +7,7 @@ logger:
 simulation:
   loops_per_run: 1000
   snapshot_interval: 1000
-  stats_interval: 20
+  stats_interval: 1
   draw_interval: 100
 
 
@@ -24,6 +24,12 @@ simulations:
           n:  10
       distribution_function:
         name: "random"
+        options:
+          n: 5
+    rules:
+      - name: "association"
+        options:
+          p: 0.6
     stats:
       active:
         - "number_of_edges"
@@ -42,7 +48,12 @@ simulations:
           n: 10
       distribution_function:
         name: "random"
-
+        options:
+          n: 5
+    rules:
+      - name: "association"
+        options:
+          p: 0.6
     stats:
       active:
         - "number_of_edges"
@@ -64,6 +75,17 @@ simulations:
           n: 10
       distribution_function:
         name: "random"
+        options:
+          n: 5
+    rules:
+      - name: "association"
+        options:
+          p: 0.6
+      - name: "disassociation"
+        options:
+          p: 0.6
+
+
     stats:
       active:
         - "number_of_edges"

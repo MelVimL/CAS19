@@ -81,7 +81,7 @@ class Actors:
     @staticmethod
     def create_random(**kwargs):
 
-        return Actor([r.random() for x in range(r.choice(range(kwargs.get("n"))))])
+        return [r.choice([1.0, 0.0, -1.0]) for x in range(kwargs.get("n")) ]
 
     @staticmethod
     def func_by_name(name):
@@ -107,8 +107,9 @@ class Distributions:
     @staticmethod
     def create_random(**kwargs):
         randoms = [x for x in range(len(kwargs.get("graph").nodes))]
+        r.shuffle(randoms)
 
-        return [randoms.pop(r.choice(randoms)) for x in randoms]
+        return randoms
 
     @staticmethod
     def func_by_name(name):
@@ -119,8 +120,66 @@ class Distributions:
         :return: a function to create a actor
         """
         func_mapper = {
-            "nihilist":     Actors.create_nihilist,
-            "opportunist":  Actors.create_opportunist,
-            "random":       Actors.create_random
+            "random":       Distributions.create_random
         }
         return func_mapper.get(name)
+
+
+class Rules:
+    def __init__(self):
+        pass
+
+    # APPLY FUNCTIONS
+
+    @staticmethod
+    def create_actions_by_name(node, graph, conf):
+        """
+
+        """
+        func_mapper = {
+            "association":     Rules.gen_association,
+            "disassociation":  Rules.gen_disassociation,
+            "social_desirability": Rules.gen_social_desirability,
+        }
+        return func_mapper.get(conf.get("name"))(node=node, graph=graph, conf=conf)
+
+    # PARAM FUNCTIONS
+
+    @staticmethod
+    def gen_association(node, graph, conf):
+        result = []
+        node_a = node
+        actor_a = graph.nodes[node_a]["actor"]
+        neighbors_a = set(graph.neighbors(node_a))
+
+        for node_b in neighbors_a:
+            actor_b = graph.nodes[node_b]["actor"]
+            neighbors_b = set(graph.neighbors(node_b))
+            possible_cs = (neighbors_b - neighbors_a) - set([node_a])
+
+            if r.random() > actor_a.orientation(actor_b) and possible_cs:
+                node_c_id = r.choice([x for x in possible_cs])
+                result += [{"name": "add_edge",
+                            "node_a_id": node_a,
+                            "node_b_id": node_c_id}]
+
+        return result
+
+    @staticmethod
+    def gen_disassociation(node, graph, conf):
+        result = []
+        node_a = node
+        actor_a = graph.nodes[node_a]["actor"]
+
+        for node_b in graph.neighbors(node_a):
+            actor_b = graph.nodes[node_b]["actor"]
+            if -(r.random()) > actor_a.orientation(actor_b) and graph.has_edge(actor_a, actor_b):
+                result += [{"name": "remove_edge",
+                            "node_a_id": node_a,
+                            "node_b_id": node_b}]
+
+        return result
+
+    @staticmethod
+    def gen_social_desirability(node, graph, conf):
+        return [r.choice([1.0, 0.0, -1.0]) for x in range(r.choice(range(kwargs.get("n"))) + 1)]

@@ -21,6 +21,12 @@ class Actor:
         return a * 0.5 * (a * b)
 
     def orientation(self, other):
+        a = self.interests()
+        b = other.interests()
+        _a = self.magnitude()
+        _b = other.magnitude()
 
-        return (self.interests() * other.interests()) / \
-               (self.magnitude() * other.magnitude())
+        return np.dot(a, b) / (_a * _b)
+
+    def __str__(self):
+        return "Actor : {}".format(self.interests())

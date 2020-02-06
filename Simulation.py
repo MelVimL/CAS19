@@ -6,7 +6,8 @@ import networkx as nx
 import yaml
 from networkx import write_yaml
 
-from fractories import Graphs, Actors, Distributions
+from actors import Actor
+from fractories import Graphs, Actors, Distributions, Rules
 
 log = logging.getLogger(__name__)
 BASE_PATH_LAYOUT = "{}/_{}.{}"
@@ -50,7 +51,7 @@ class Simulation:
         self._draw_number = 0
         self._stats = Stats(name=self._name, path=self._paths["stat_root"],config=self._config.get("stats"))
 
-        self.graph = self._generate_graph()
+        self.graph = self._create_graph()
         self.n = 0
 
     def _create_paths(self):
@@ -67,7 +68,30 @@ class Simulation:
 
     def update(self):
         log.info("Update Simulation: {}".format(self._name))
+        actions = self._generate_action()
+
+        for action in actions:
+            for sub_action in action:
+                if sub_action["name"] is "remove_edge":
+                    log.debug("Remove Edge")
+                    self.graph.remove_edge(sub_action["node_a_id"], sub_action["node_b_id"])
+                elif sub_action["name"] is "add_edge":
+                    log.debug("Add Edge")
+                    self.graph.add_edge(sub_action["node_a_id"], sub_action["node_b_id"])
+                elif sub_action["name"] is "add_node":
+                    log.debug("Add Node")
+                    self.graph.add_node()
+                elif sub_action["name"] is "remove_node":
+                    log.debug("Remove Edge")
+                    self.graph.remove_node(sub_action["node_a_id"])
         self.n += 1
+
+    def _generate_action(self):
+        result = []
+        for node in self.graph.nodes:
+            for conf in self._config.get("rules"):
+                result.append(Rules.create_actions_by_name(node=node, graph=self.graph, conf=conf))
+        return result
 
     def stats(self):
         log.info("Creates Stats: {}".format(self._name))
@@ -106,15 +130,22 @@ class Simulation:
         gen_options = gen_settings.get("options")
 
         dis_function_name = dis_settings.get("name")
-        dis_options = dict(dis_settings.get("options"))     # Makes a copy because i don't want a mutable config.
+        log.debug(dis_function_name)
+        dis_options = dict(dis_settings.get("options", {}))     # Makes a copy because i don't want a mutable config.
         dis_options.update({"graph": graph})
 
-        positions = Distributions.get_func_by_name(dis_function_name)(**dis_options)
-        actors = [Actors.get_func_by_name(gen_function_name)(**gen_options) for x in range(len(graph.nodes))]
+        positions = Distributions.func_by_name(dis_function_name)(**dis_options)
+        actors = [Actors.func_by_name(gen_function_name)(**gen_options) for x in range(len(graph.nodes))]
 
+        log.info("Populate Graph with Actors.")
         for pos, actor in zip(positions, actors):
+            actor = Actor(actor)
+            log.debug("Position: {} {} ".format(pos, actor))
+            log.debug("Magnitude: {} Orientation {}".format(actor.magnitude(),
+                                                            actor.orientation(Actor([-1., -1., -1., -1., -1., -1., -1., -1., -1., -1.]))))
             graph.nodes[pos]["actor"] = actor
 
         return graph
+
 
 

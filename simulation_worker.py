@@ -23,7 +23,8 @@ class SimulationWorker(th.Thread):
             if self.__is_time_for_snapshot(n):
                 self.simulation.create_snapshot()
             if self.__is_time_for_draw(n):
-                self.simulation.draw();
+                self.simulation.draw()
+
             self.simulation.update()
 
     def __is_time_for_snapshot(self, n):
