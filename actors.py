@@ -17,8 +17,8 @@ class Actor:
     def orientation_of_action(self, other):
         a = self.interests()
         b = other.interests()
-
-        return a * 0.5 * (a * b)
+        result = np.dot(a, 0.5 * (a+b))
+        return result
 
     def orientation(self, other):
         a = self.interests()

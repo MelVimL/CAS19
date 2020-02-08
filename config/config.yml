@@ -1,5 +1,5 @@
 logger:
-  level: "ERROR"
+  level: "INFO"
   consol_active: yes
   file_active: yes
   file_path: "./log/test.log"
@@ -9,84 +9,81 @@ simulation:
   snapshot_interval: 1000
   stats_interval: 1
   draw_interval: 100
+  max_threads: 1
 
 
 simulations:
-  - name: "Sim_1"
-    nodes:  10
-    graph:
-      generator_function:
-        name: "complete"
-    actor:
-      generator_function:
-        name: "random"
-        options:
-          n:  10
-      distribution_function:
-        name: "random"
-        options:
-          n: 5
-    rules:
-      - name: "association"
-        options:
-          p: 0.6
-    stats:
-      active:
-        - "number_of_edges"
-        - "number_of_nodes"
-
-
-  - name: "Sim_2"
-    nodes: 2
-    graph:
-      generator_function:
-        name: "complete"
-    actor:
-      generator_function:
-        name: "random"
-        options:
-          n: 10
-      distribution_function:
-        name: "random"
-        options:
-          n: 5
-    rules:
-      - name: "association"
-        options:
-          p: 0.6
-    stats:
-      active:
-        - "number_of_edges"
-        - "number_of_nodes"
-
-
-  - name: "Sim_3"
-    nodes: 1000
-    graph:
-      generator_function:
-        name: "barabasi_albert"
-        options:
-          m: 1
-          seed: None
-    actor:
-      generator_function:
-        name: "random"
-        options:
-          n: 10
-      distribution_function:
-        name: "random"
-        options:
-          n: 5
-    rules:
-      - name: "association"
-        options:
-          p: 0.6
-      - name: "disassociation"
-        options:
-          p: 0.6
-
-
-    stats:
-      active:
-        - "number_of_edges"
-        - "number_of_nodes"
+  check_for_diviation_r_c:
+    sim_1: None
+    sim_2: None
+    sim_3: None
+    sim_4: None
+    sim_5: None
+    sim_6: None
+    sim_7: None
+    sim_8: None
+    sim_9: None
+    sim_10: None
+    sim_11: None
+    sim_12: None
+    default:
+      nodes: 10
+      graph:
+        generator_function:
+          name: "barabasi_albert"
+          options:
+            m: 2
+      actor:
+        generator_function:
+          name: "random"
+          options:
+            n:  10
+        distribution_function:
+          name: "random"
+          options:
+            n: 5
+      rules:
+        - name: "association"
+        - name: "disassociation"
+      stats:
+        active:
+          - "number_of_edges"
+          - "number_of_nodes"
+          - "average_orientation"
+          - "graph_density"
+          - "graph_transitivity"
+  group_random_barabasi_expo:
+    sim_1:
+      nodes: 10
+    sim_2:
+      nodes: 100
+    sim_3:
+      nodes: 1000
+    sim_4:
+      nodes: 10000
+    default:
+      nodes: 10
+      graph:
+        generator_function:
+          name: "barabasi_albert"
+          options:
+            m: 2
+      actor:
+        generator_function:
+          name: "random"
+          options:
+            n:  10
+        distribution_function:
+          name: "random"
+          options:
+           n: 5
+      rules:
+        - name: "association"
+        - name: "disassociation"
+      stats:
+        active:
+          - "number_of_edges"
+          - "number_of_nodes"
+          - "average_orientation"
+          - "graph_density"
+          - "graph_transitivity"

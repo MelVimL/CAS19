@@ -44,4 +44,5 @@ class StatsFileHandler:
         self.worker.start()
 
     def stop(self):
+        pass
 

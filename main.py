@@ -1,3 +1,5 @@
+import threading
+
 from Simulation import Simulation
 from simulation_worker import SimulationWorker
 from utils.logger import setup_logger
@@ -13,14 +15,16 @@ class App:
     def __init__(self):
         self.threads = []
         self.config = ConfigLoader.load()
+        self.max_threads = self.config.get("simulation").get("max_threads")
+        self.simulations = self.__create_simulations()
         setup_logger(self.config.get("logger"))
 
-    def update(self):
-        simulations = self.__create_simulations()
-        self.__start_all_simulations(simulations)
 
+    def update(self):
+        self._start_n_simulations(n=self.max_threads, simulations=self.simulations)
         self.__wait_for_all_simulations()
-        return False
+        log.info("{} Simulation(s) left.".format(len(self.simulations)))
+        return self.simulations
 
     def run(self):
         while self.update():
@@ -51,7 +55,8 @@ class App:
         Waits until all threads are done.
         :return: None
         """
-        for thread in self.threads:
+        for i in range(len(self.threads)):
+            thread = self.threads.pop()
             thread.join()
             log.info("Thread joined.")
 
@@ -78,6 +83,12 @@ class App:
         log.info("Thread started.")
 
         return thread
+
+    def _start_n_simulations(self, n, simulations):
+        for i in range(n):
+            if simulations:
+                thread = self.__start_simulation(simulations.pop(0))
+                self.threads.append(thread)
 
 
 if __name__ == "__main__":
