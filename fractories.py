@@ -164,7 +164,29 @@ class Rules:
 
     @staticmethod
     def gen_dynamic_ad(edge, graph, conf):
-        pass
+        node_a = edge[0]
+        node_b = edge[1]
+        actor_a = graph.nodes[node_a]["actor"]
+        actor_b = graph.nodes[node_b]["actor"]
+        za = actor_a.orientation_of_action(actor_b)
+        zb = actor_b.orientation_of_action(actor_a)
+        zv = r.random() * (za + zb)
+
+        node_x, node_y = (node_a, node_b) if zv < za else (node_b, node_a)
+        actor_x = graph.nodes[node_x]["actor"]
+        actor_y = graph.nodes[node_y]["actor"]
+        neighbors_y = list(graph.neighbors(node_y))
+        node_z = r.choice(neighbors_y)
+
+        z = r.random()
+        if z < actor_x.orientation_of_action(actor_y):
+            return [{"name": "add_edge",
+                     "node_x": node_x,
+                     "node_z": node_z}]
+        else:
+            return [{"name": "remove_edge",
+                     "node_x": node_x,
+                     "node_z": node_z}]
 
     @staticmethod
     def gen_association(edge, graph, conf):
@@ -204,18 +226,24 @@ class Rules:
         zb = actor_b.orientation_of_action(actor_a)
         zv = r.random() * (za + zb)
 
-        if zv > za:
-            node_y = node_b
-        else:
-            node_y = node_a
+        node_x, node_y = (node_b, node_a) if zv > za else (node_a, node_b)
 
         neighbors_y = list(graph.neighbors(node_y))
         node_z = r.choice(neighbors_y)
 
         return [{"name": "remove_edge",
-                 "node_x": node_y,
+                 "node_x": node_x,
                  "node_z": node_z}]
 
     @staticmethod
-    def gen_social_desirability(node, graph, conf):
-        return [r.choice([1.0, 0.0, -1.0]) for x in range(r.choice(range(kwargs.get("n"))) + 1)]
+    def gen_social_desirability(edge, graph, conf):
+        node_a = edge[0]
+        actor_a = graph.nodes[node_a]["actor"]
+        if not actor_a.obeys_social_pressure():
+            norm = [r.choice(1,0,-1) for x in range(len(actor_a.interessts()))]
+            for node in graph.nodes:
+                d = conf["options"]["d"]
+                p = conf["options"]["d"]
+                graph.nodes[node]["actor"].set_social_desirability(p=p, d=d, norm=norm)
+
+        return []

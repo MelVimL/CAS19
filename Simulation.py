@@ -167,7 +167,7 @@ class Simulation:
 
         gen_function_name = gen_settings.get("name")
         gen_options = gen_settings.get("options")
-
+        print(self._config)
         dis_function_name = dis_settings.get("name")
         log.debug(dis_function_name)
         dis_options = dict(dis_settings.get("options", {}))  # Makes a copy because i don't want a mutable config.
