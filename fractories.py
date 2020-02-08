@@ -240,7 +240,7 @@ class Rules:
         node_a = edge[0]
         actor_a = graph.nodes[node_a]["actor"]
         if not actor_a.obeys_social_pressure():
-            norm = [r.choice(1,0,-1) for x in range(len(actor_a.interessts()))]
+            norm = [r.choice(1,0,-1) for x in range(len(actor_a.interests()))]
             for node in graph.nodes:
                 d = conf["options"]["d"]
                 p = conf["options"]["d"]
