@@ -22,7 +22,7 @@ class App:
 
     def update(self):
         self._start_n_simulations(n=self.max_threads, simulations=self.simulations)
-        self.__wait_for_all_simulations()
+        self.iter_sims(simulations=self.simulations)
         log.info("{} Simulation(s) left.".format(len(self.simulations)))
         return self.simulations
 
@@ -50,12 +50,23 @@ class App:
 
         return Simulation(config=config)
 
+    def iter_sims(self, simulations):
+        while simulations:
+            print(threading.active_count())
+            for i in range(len(self.threads)):
+                if not self.threads[i].is_alive():
+                    self.threads[i].join()
+                    self.threads.pop(i)
+                    thread = self.__start_simulation(simulations.pop(0))
+                    self.threads.append(thread)
+
     def __wait_for_all_simulations(self):
         """
         Waits until all threads are done.
         :return: None
         """
         for i in range(len(self.threads)):
+
             thread = self.threads.pop()
             thread.join()
             log.info("Thread joined.")
