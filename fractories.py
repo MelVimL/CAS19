@@ -28,7 +28,12 @@ class Graphs:
 
     @staticmethod
     def create_watts_strogatz(**kwargs):
-        return nx.generators.connected_watts_strogatz_graph(n=kwargs.get("n"), k=kwargs.get("k"))
+        return nx.generators.connected_watts_strogatz_graph(n=kwargs.get("n"), k=kwargs.get("k"), p=kwargs.get("p"))
+
+    @staticmethod
+    def create_newman_watts(**kwargs):
+        print(kwargs)
+        return nx.generators.connected_watts_strogatz_graph(n=kwargs.get("n"), k=kwargs.get("k"), p=kwargs.get("p"))
 
     @staticmethod
     def create_clustered_watts_strogatz(**kwargs):
@@ -40,7 +45,7 @@ class Graphs:
 
     @staticmethod
     def create_powerlaw_cluster(**kwargs):
-        return nx.powerlaw_cluster_graph(n=kwargs.get("n"), m=kwargs.get("m"))
+        return nx.powerlaw_cluster_graph(n=kwargs.get("n"), m=kwargs.get("m"), p=kwargs.get("p"))
 
     @staticmethod
     def func_by_name(name):
@@ -57,8 +62,8 @@ class Graphs:
             "watts_strogatz":               Graphs.create_watts_strogatz,
             "clustered_watts_strogatz":     Graphs.create_clustered_watts_strogatz,
             "powerlaw_cluster":             Graphs.create_powerlaw_cluster,
-            "clustered_powerlaw_cluster":   Graphs.create_clustered_powerlaw_cluster
-
+            "clustered_powerlaw_cluster":   Graphs.create_clustered_powerlaw_cluster,
+            "newman_watts":                 Graphs.create_newman_watts
         }
         return func_mapper.get(name)
 

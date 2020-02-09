@@ -52,7 +52,6 @@ class App:
 
     def iter_sims(self, simulations):
         while simulations:
-            print(threading.active_count())
             for i in range(len(self.threads)):
                 if not self.threads[i].is_alive():
                     self.threads[i].join()
