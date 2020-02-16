@@ -14,164 +14,17 @@ simulation:
 
 simulations:
   #Rule Checks
-  rule_check_ns:
-    sim_1:
-      rules:
-        - name: "association"
-        - name: "disassociation"
-    sim_2:
-      rules:
-        - name: "dynamic_ad"
+  ba_10a_100n_p8_d2_xl:
     sim_3:
-      rules:
-        - name: "association"
-        - name: "disassociation"
-        - name: "social_desirability"
-          options:
-            p: 0.2
-            d: 0.0
-    sim_4:
-      actor:
-        generator_function:
-          name: "random"
-          options:
-            n:  10
-            social_disirebility:
-              p: 0.2
-              d: 0.0
-        distribution_function:
-          name: "random"
-          options:
-            n: 5
-      rules:
-        - name: "dynamic_ad"
+      nodes: 100
 
     default:
       nodes: 100
       graph:
         generator_function:
-          name: "newman_watts"
-          options:
-            k: 2
-            p: 1
-      actor:
-        generator_function:
-          name: "random"
-          options:
-            n:  10
-        distribution_function:
-          name: "random"
-          options:
-            n: 5
-      rules:
-        - name: "association"
-        - name: "disassociation"
-      stats:
-        active:
-          - "number_of_edges"
-          - "number_of_nodes"
-          - "average_orientation"
-          - "graph_density"
-          - "graph_transitivity"
-  rule_check_ws:
-    sim_1:
-      rules:
-        - name: "association"
-        - name: "disassociation"
-    sim_2:
-      rules:
-        - name: "dynamic_ad"
-    sim_3:
-      rules:
-        - name: "association"
-        - name: "disassociation"
-        - name: "social_desirability"
-          options:
-            p: 0.2
-            d: 0.0
-    sim_4:
-      actor:
-        generator_function:
-          name: "random"
-          options:
-            n:  10
-            social_disirebility:
-              p: 0.2
-              d: 0.0
-        distribution_function:
-          name: "random"
-          options:
-            n: 5
-      rules:
-        - name: "dynamic_ad"
-
-    default:
-      nodes: 100
-      graph:
-        generator_function:
-          name: "watts_strogatz"
-          options:
-            k: 2
-            p: 1
-      actor:
-        generator_function:
-          name: "random"
-          options:
-            n:  10
-        distribution_function:
-          name: "random"
-          options:
-            n: 5
-      rules:
-        - name: "association"
-        - name: "disassociation"
-      stats:
-        active:
-          - "number_of_edges"
-          - "number_of_nodes"
-          - "average_orientation"
-          - "graph_density"
-          - "graph_transitivity"
-  rule_check_pc:
-    sim_1:
-      rules:
-        - name: "association"
-        - name: "disassociation"
-    sim_2:
-      rules:
-        - name: "dynamic_ad"
-    sim_3:
-      rules:
-        - name: "association"
-        - name: "disassociation"
-        - name: "social_desirability"
-          options:
-            p: 0.2
-            d: 0.0
-    sim_4:
-      actor:
-        generator_function:
-          name: "random"
-          options:
-            n:  10
-            social_disirebility:
-              p: 0.2
-              d: 0.0
-        distribution_function:
-          name: "random"
-          options:
-            n: 5
-      rules:
-        - name: "dynamic_ad"
-
-    default:
-      nodes: 100
-      graph:
-        generator_function:
-          name: "powerlaw_cluster"
+          name: "barabasi_albert"
           options:
             m: 1
-            p: 0.6
       actor:
         generator_function:
           name: "random"
@@ -179,11 +32,12 @@ simulations:
             n:  10
         distribution_function:
           name: "random"
-          options:
-            n: 5
       rules:
-        - name: "association"
-        - name: "disassociation"
+        - name: "dynamic_ad"
+        - name: "social_desirability"
+          options:
+            p: 0.08
+            d: 0.02
       stats:
         active:
           - "number_of_edges"
@@ -191,238 +45,17 @@ simulations:
           - "average_orientation"
           - "graph_density"
           - "graph_transitivity"
-  #Expo
-  expo_check_ns:
-    sim_1_10:
-      nodes: 10
-      rules:
-        - name: "association"
-        - name: "disassociation"
-    sim_1_100:
-      nodes: 100
-      rules:
-        - name: "association"
-        - name: "disassociation"
-    sim_1_1000:
-      nodes: 1000
-      rules:
-        - name: "association"
-        - name: "disassociation"
-    sim_2_10:
-      nodes: 10
-      rules:
-        - name: "dynamic_ad"
-    sim_2_100:
-      nodes: 100
-      rules:
-        - name: "dynamic_ad"
-    sim_2_1000:
-      nodes: 1000
-      rules:
-        - name: "dynamic_ad"
-    sim_3_10:
-      nodes: 10
-      rules:
-        - name: "association"
-        - name: "disassociation"
-        - name: "social_desirability"
-          options:
-            p: 0.2
-            d: 0.0
-    sim_3_100:
-      nodes: 100
-      rules:
-        - name: "association"
-        - name: "disassociation"
-        - name: "social_desirability"
-          options:
-            p: 0.2
-            d: 0.0
-    sim_3_1000:
-      nodes: 1000
-      rules:
-        - name: "association"
-        - name: "disassociation"
-        - name: "social_desirability"
-          options:
-            p: 0.2
-            d: 0.0
-    sim_4_10:
-      nodes: 10
-      actor:
-        generator_function:
-          name: "random"
-          options:
-            n:  10
-            social_disirebility:
-              p: 0.2
-              d: 0.0
-        distribution_function:
-          name: "random"
-          options:
-            n: 5
-      rules:
-        - name: "dynamic_ad"
-    sim_4_100:
-      nodes: 100
-      actor:
-        generator_function:
-          name: "random"
-          options:
-            n:  10
-            social_disirebility:
-              p: 0.2
-              d: 0.0
-        distribution_function:
-          name: "random"
-          options:
-            n: 5
-      rules:
-        - name: "dynamic_ad"
-
-    sim_4_1000:
-      nodes: 1000
-      actor:
-        generator_function:
-          name: "random"
-          options:
-            n:  10
-            social_disirebility:
-              p: 0.2
-              d: 0.0
-        distribution_function:
-          name: "random"
-          options:
-            n: 5
-      rules:
-        - name: "dynamic_ad"
-
-    default:
-      nodes: 100
-      graph:
-        generator_function:
-          name: "newman_watts"
-          options:
-            k: 2
-            p: 1
-      actor:
-        generator_function:
-          name: "random"
-          options:
-            n:  10
-        distribution_function:
-          name: "random"
-          options:
-            n: 5
-      rules:
-        - name: "association"
-        - name: "disassociation"
-      stats:
-        active:
-          - "number_of_edges"
-          - "number_of_nodes"
-          - "average_orientation"
-          - "graph_density"
-          - "graph_transitivity"
-  expo_check_ws:
-    sim_1:
-      rules:
-        - name: "association"
-        - name: "disassociation"
-    sim_2:
-      rules:
-        - name: "dynamic_ad"
+  ba_10a_100n_p4_d8_xl:
     sim_3:
-      rules:
-        - name: "association"
-        - name: "disassociation"
-        - name: "social_desirability"
-          options:
-            p: 0.2
-            d: 0.0
-    sim_4:
-      actor:
-        generator_function:
-          name: "random"
-          options:
-            n:  10
-            social_disirebility:
-              p: 0.2
-              d: 0.0
-        distribution_function:
-          name: "random"
-          options:
-            n: 5
-      rules:
-        - name: "dynamic_ad"
+      nodes: 100
 
     default:
       nodes: 100
       graph:
         generator_function:
-          name: "watts_strogatz"
-          options:
-            k: 2
-            p: 1
-      actor:
-        generator_function:
-          name: "random"
-          options:
-            n:  10
-        distribution_function:
-          name: "random"
-          options:
-            n: 5
-      rules:
-        - name: "association"
-        - name: "disassociation"
-      stats:
-        active:
-          - "number_of_edges"
-          - "number_of_nodes"
-          - "average_orientation"
-          - "graph_density"
-          - "graph_transitivity"
-  expo_check_pc:
-    sim_1:
-      rules:
-        - name: "association"
-        - name: "disassociation"
-    sim_2:
-      rules:
-        - name: "dynamic_ad"
-    sim_3:
-      rules:
-        - name: "association"
-        - name: "disassociation"
-        - name: "social_desirability"
-          options:
-            p: 0.2
-            d: 0.0
-    sim_4:
-      actor:
-        generator_function:
-          name: "random"
-          options:
-            n:  10
-            social_disirebility:
-              p: 0.2
-              d: 0.0
-        distribution_function:
-          name: "random"
-          options:
-            n: 5
-      rules:
-        - name: "dynamic_ad"
-
-    default:
-      nodes: 100
-      graph:
-        generator_function:
-          name: "powerlaw_cluster"
+          name: "barabasi_albert"
           options:
             m: 1
-            p: 0.6
       actor:
         generator_function:
           name: "random"
@@ -430,11 +63,12 @@ simulations:
             n:  10
         distribution_function:
           name: "random"
-          options:
-            n: 5
       rules:
-        - name: "association"
-        - name: "disassociation"
+        - name: "dynamic_ad"
+        - name: "social_desirability"
+          options:
+            p: 0.04
+            d: 0.08
       stats:
         active:
           - "number_of_edges"

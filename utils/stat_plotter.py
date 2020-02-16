@@ -28,7 +28,7 @@ def main():
     stats = gather_all_stats()
     for sim in stats:
         for generation in stats[sim]:
-            fig = plt.figure()
+            fig = plt.figure(sim)
             ax = fig.add_subplot(1, 1, 1)
             ax.set_title(sim)
             x1 = stats[sim][generation]["average_orientation"]

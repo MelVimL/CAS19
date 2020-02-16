@@ -86,7 +86,29 @@ class Actors:
     @staticmethod
     def create_random(**kwargs):
 
-        return [r.choice([1.0, 0.0, -1.0]) for x in range(kwargs.get("n")) ]
+        return [r.choice([1.0, 0.0, -1.0]) for x in range(kwargs.get("n"))]
+
+    @staticmethod
+    def create_linear(**kwargs):
+        target_r, cur_r = r.random(), 1
+        cur_values = [1, 0, -1]
+
+        while target_r < cur_r:
+            cur_values.append(0)
+            cur_r -= kwargs["b"]
+
+        return [r.choice(cur_values) for x in range(kwargs.get("n"))]
+
+    @staticmethod
+    def create_exponential(**kwargs):
+        target_r, cur_r = r.random(), 1
+        cur_values = [1, 0, -1]
+
+        while target_r < cur_r:
+            cur_values.append(0)
+            cur_r /= kwargs["b"]
+
+        return [r.choice(cur_values) for x in range(kwargs.get("n"))]
 
     @staticmethod
     def func_by_name(name):
@@ -99,7 +121,9 @@ class Actors:
         func_mapper = {
             "nihilist":     Actors.create_nihilist,
             "opportunist":  Actors.create_opportunist,
-            "random":       Actors.create_random
+            "random":       Actors.create_random,
+            "linear":       Actors.create_linear,
+            "exponential":  Actors.create_exponential
         }
         return func_mapper.get(name)
 
@@ -117,14 +141,14 @@ class Distributions:
         return randoms
 
     @staticmethod
-    def create_gradually(**kwargs):
+    def create_linear(**kwargs):
         randoms = [x for x in range(len(kwargs.get("graph").nodes))]
         r.shuffle(randoms)
 
         return randoms
 
     @staticmethod
-    def create_contradicting(**kwargs):
+    def create_exponential(**kwargs):
         randoms = [x for x in range(len(kwargs.get("graph").nodes))]
         r.shuffle(randoms)
 
@@ -140,8 +164,8 @@ class Distributions:
         """
         func_mapper = {
             "random":       Distributions.create_random,
-            "gradual":      Distributions.create_gradually,
-            "contradicting": Distributions.create_contradicting
+            "linear":      Distributions.create_linear,
+            "exponential": Distributions.create_exponential
         }
         return func_mapper.get(name)
 

@@ -38,7 +38,7 @@ class Stats:
                 actor_a = simulation.graph.nodes[node_a]["actor"]
                 actor_b = simulation.graph.nodes[node_b]["actor"]
                 sum_of_orientation += actor_a.orientation(actor_b)
-            self.average_orientation = -1 if e == 0 else float(1 / e * sum_of_orientation)
+            self.average_orientation = -1 if e == 0 else float((1 / e) * sum_of_orientation)
         if "graph_density" in actives:
             self.graph_density = nx.density(simulation.graph)
         if "graph_transitivity" in actives:
@@ -179,10 +179,6 @@ class Simulation:
         log.info("Populate Graph with Actors.")
         for pos, actor in zip(positions, actors):
             actor = Actor(actor)
-            log.debug("Position: {} {} ".format(pos, actor))
-            log.debug("Magnitude: {} Orientation {}".format(actor.magnitude(),
-                                                            actor.orientation(Actor(
-                                                                [-1., -1., -1., -1., -1., -1., -1., -1., -1., -1.]))))
             graph.nodes[pos]["actor"] = actor
 
         return graph
